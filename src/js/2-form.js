@@ -1,36 +1,31 @@
-const form = document.querySelector(`.feedback-form`);
+const form = document.querySelector('.feedback-form');
 const messageInfo = form.elements.message;
 const emailInfo = form.elements.email;
 
-const localStorageMessage = 'message';
-const localStorageEmail = 'email';
+const localStorageKey = 'feedback-form-state';
 
-// =========== Інпут з повідомленням ==================
+const savedData = JSON.parse(localStorage.getItem(localStorageKey));
 
-messageInfo.value = localStorage.getItem(localStorageMessage) ?? '';
+messageInfo.addEventListener('input', event => {
+  const savedData = JSON.stringify({
+    email: emailInfo.value,
+    message: messageInfo.value,
+  });
+  localStorage.setItem(localStorageKey, savedData);
+});
 
-messageInfo.addEventListener('input', evt => {
-  localStorage.setItem(localStorageMessage, evt.target.value);
+emailInfo.addEventListener('input', event => {
+  const savedData = JSON.stringify({
+    email: emailInfo.value,
+    message: messageInfo.value,
+  });
+  localStorage.setItem(localStorageKey, savedData);
 });
 
 form.addEventListener('submit', evt => {
   evt.preventDefault();
-  console.log(evt.target.elements.message.value);
-  localStorage.removeItem(localStorageMessage);
-  form.reset();
-});
-
-//  ============== Інпут з поштою =================
-
-emailInfo.value = localStorage.getItem(localStorageEmail) ?? '';
-
-emailInfo.addEventListener('input', evt => {
-  localStorage.setItem(localStorageEmail, evt.target.value);
-});
-
-form.addEventListener('submit', evt => {
-  evt.preventDefault();
-  console.log(evt.target.elements.email.value);
-  localStorage.removeItem(localStorageEmail);
-  form.reset();
+  if (messageInfo.value && emailInfo.value) {
+    localStorage.removeItem(localStorageKey);
+    form.reset();
+  }
 });
