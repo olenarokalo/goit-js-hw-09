@@ -5,6 +5,10 @@ const emailInfo = form.elements.email;
 const localStorageKey = 'feedback-form-state';
 
 const savedData = JSON.parse(localStorage.getItem(localStorageKey));
+if (savedData) {
+  messageInfo.value = savedData.message;
+  emailInfo.value = savedData.email;
+}
 
 messageInfo.addEventListener('input', event => {
   const savedData = JSON.stringify({
